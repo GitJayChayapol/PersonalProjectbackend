@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model IntegratedTable {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @db.Date
+  company     String
+  carId       Int
+  car         Car      @relation(fields: [carId], references: [id])
+  driverId    Int
+  driver      Driver   @relation(fields: [driverId], references: [id])
+  customerId  Int
+  customer    Customer @relation(fields: [customerId], references: [id])
+  origin      String
+  destination String
+  detial      String
+  price       String?
+  createAt    DateTime @default(now())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  username        String            @unique
+  password        String
+  firstName       String
+  lastName        String
+  phoneNumber     String
+  IntegratedTable IntegratedTable[]
+}
+
+model Car {
+  id              Int               @id @default(autoincrement())
+  carRegistration String            @unique
+  carCall         String
+  brand           String?
+  model           String?
+  typeTruck       String
+  temperatureMax  String?
+  IntegratedTable IntegratedTable[]
+}
+
+model Customer {
+  id                Int               @id @default(autoincrement())
+  customerName      String
+  customerCall      String
+  customerAddress   String
+  taxIdentification String            @unique
+  customerPhone     String?
+  IntegratedTable   IntegratedTable[]
+  Invoice           Invoice[]
+}
+
+model Driver {
+  id              Int               @id @default(autoincrement())
+  driverFirstName String
+  driverLastName  String
+  driverCall      String
+  gender          Sex
+  brithDay        DateTime          @db.Date
+  identification  String            @unique
+  IntegratedTable IntegratedTable[]
+}
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+model Invoice {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+  totalPrice Float
+  note       String?
+}
