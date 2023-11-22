@@ -4,6 +4,8 @@ const prisma = require("../models/prisma");
 exports.createAccount = async (req, res, next) => {
   try {
     const data = req.body;
+    // console.log(data);
+
     const createAccount = await prisma.account.create({
       data: {
         billing: data.billing,
@@ -20,6 +22,10 @@ exports.createAccount = async (req, res, next) => {
         invoice: data.invoice,
       },
     });
+    console.log(createAccount);
+    console.log(data.invoice);
+    console.log(data["0"][0].customerId);
+    console.log(updateAcc, "update");
     res.status(201).json({ createAccount, updateAcc });
   } catch (err) {
     next(err);
@@ -105,6 +111,7 @@ exports.getAccountbyId = async (req, res, next) => {
     WHERE customerId =${+data.id}
     GROUP BY customerId
   `;
+    console.log(newTable);
     res.status(201).json({ newTable, totalPrice });
   } catch (err) {
     next(err);

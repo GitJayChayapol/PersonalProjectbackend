@@ -19,7 +19,7 @@ model IntegratedTable {
   customer    Customer   @relation(fields: [customerId], references: [id])
   origin      String
   destination String
-  detial      String
+  detial      String?
   price       String?
   accountId   Int?
   account     Account?   @relation(fields: [accountId], references: [id])

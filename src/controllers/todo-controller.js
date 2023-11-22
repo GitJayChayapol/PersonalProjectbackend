@@ -4,6 +4,7 @@ const prisma = require("../models/prisma");
 exports.createtodo = async (req, res, next) => {
   try {
     const data = req.body;
+    console.log(data);
     const datatodo = await prisma.integratedTable.create({
       data: {
         date: data.date + "T00:00:00Z",
@@ -215,6 +216,7 @@ exports.search = async (req, res, next) => {
     WHERE customerId =${+data.id}
     GROUP BY customerId
   `;
+
     res.status(201).json({ searchtodo, totalPrice });
   } catch (err) {
     next(err);
