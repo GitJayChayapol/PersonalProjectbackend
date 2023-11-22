@@ -13,4 +13,10 @@ const registerSchema = Joi.object({
   phoneNumber: Joi.string().trim().required(),
 });
 
+const loginSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().required(),
+});
+
+exports.loginSchema = loginSchema;
 exports.registerSchema = registerSchema;

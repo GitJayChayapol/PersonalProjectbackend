@@ -8,22 +8,30 @@ datasource db {
 }
 
 model IntegratedTable {
-  id          Int      @id @default(autoincrement())
-  date        DateTime @db.Date
-  company     String
+  id          Int        @id @default(autoincrement())
+  date        DateTime   @db.Date
+  invoice     String?
   carId       Int
-  car         Car      @relation(fields: [carId], references: [id])
+  car         Car        @relation(fields: [carId], references: [id])
   driverId    Int
-  driver      Driver   @relation(fields: [driverId], references: [id])
+  driver      Driver     @relation(fields: [driverId], references: [id])
   customerId  Int
-  customer    Customer @relation(fields: [customerId], references: [id])
+  customer    Customer   @relation(fields: [customerId], references: [id])
   origin      String
   destination String
   detial      String
   price       String?
-  createAt    DateTime @default(now())
+  accountId   Int?
+  account     Account?   @relation(fields: [accountId], references: [id])
+  createAt    DateTime   @default(now())
   userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
+  status      TodoStatus
+}
+
+enum TodoStatus {
+  PENDDING
+  DONE
 }
 
 model User {
@@ -55,7 +63,6 @@ model Customer {
   taxIdentification String            @unique
   customerPhone     String?
   IntegratedTable   IntegratedTable[]
-  Invoice           Invoice[]
 }
 
 model Driver {
@@ -74,10 +81,10 @@ enum Sex {
   FEMALE
 }
 
-model Invoice {
-  id         Int      @id @default(autoincrement())
-  customerId Int
-  customer   Customer @relation(fields: [customerId], references: [id])
-  totalPrice Float
-  note       String?
+model Account {
+  id              Int               @id @default(autoincrement())
+  billing         String
+  totalPrice      String
+  createAt        DateTime          @default(now())
+  IntegratedTable IntegratedTable[]
 }
